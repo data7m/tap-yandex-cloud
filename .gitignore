@@ -4,6 +4,9 @@
 # Idea files
 .idea
 
+# Node files
+node_modules
+
 # Secrets and internal config files
 config.json
 
