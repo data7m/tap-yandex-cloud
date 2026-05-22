@@ -8,7 +8,7 @@ from singer_sdk import Tap
 from singer_sdk import typing as th  # JSON schema typing helpers
 
 # TODO: Import your custom stream types here:
-from tap-yandex-cloud import streams
+from tap_yandex_cloud import streams
 
 if sys.version_info >= (3, 12):
     from typing import override
@@ -19,7 +19,7 @@ else:
 class TapYandexCloud(Tap):
     """Singer tap for YandexCloud."""
 
-    name = "tap-yandex-cloud"
+    name = "tap_yandex_cloud"
 
     # TODO: Update this section with the actual config values you expect:
     config_jsonschema = th.PropertiesList(

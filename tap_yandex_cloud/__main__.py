@@ -2,6 +2,6 @@
 
 from __future__ import annotations
 
-from tap-yandex-cloud.tap import TapYandexCloud
+from tap_yandex_cloud.tap import TapYandexCloud
 
 TapYandexCloud.cli()

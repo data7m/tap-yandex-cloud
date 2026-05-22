@@ -6,7 +6,7 @@ requires = [
 build-backend = "hatchling.build"
 
 [project]
-name = "tap-yandex-cloud"
+name = "tap_yandex_cloud"
 dynamic = ["version"]
 description = "Singer tap for YandexCloud, built with the Meltano Singer SDK."
 readme = "README.md"
@@ -39,7 +39,7 @@ s3 = [
 
 [project.scripts]
 # CLI declaration
-tap-yandex-cloud = 'tap-yandex-cloud.tap:TapYandexCloud.cli'
+tap-yandex-cloud = 'tap_yandex_cloud.tap:TapYandexCloud.cli'
 
 [dependency-groups]
 dev = [
@@ -139,6 +139,6 @@ commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = 
 description = "type checks"
 dependency_groups = [ "test", "typing" ]
 commands = [
-    [ "mypy", { replace = "posargs", default = [ "tap-yandex-cloud", "tests" ], extend = true } ],
-    [ "ty", "check", { replace = "posargs", default = [ "tap-yandex-cloud", "tests" ], extend = true } ],
+    [ "mypy", { replace = "posargs", default = [ "tap_yandex_cloud", "tests" ], extend = true } ],
+    [ "ty", "check", { replace = "posargs", default = [ "tap_yandex_cloud", "tests" ], extend = true } ],
 ]

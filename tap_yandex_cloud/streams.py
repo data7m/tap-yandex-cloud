@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from singer_sdk import typing as th  # JSON Schema typing helpers
 
-from tap-yandex-cloud.client import YandexCloudStream
+from tap_yandex_cloud.client import YandexCloudStream
 
 # TODO: - Override `UsersStream` and `GroupsStream` with your own stream definition.
 #       - Copy-paste as many times as needed to create multiple stream types.
