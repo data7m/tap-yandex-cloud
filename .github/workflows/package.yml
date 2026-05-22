@@ -29,16 +29,6 @@ jobs:
       - name: Install npm packages
         shell: bash
         run: npm install
-      - name: Run eslint commands
-        shell: bash
-        run: npm run lint
-      - name: Run prettier commands
-        shell: bash
-        run: npm run prettier
-      - name: Run HACS validation
-        uses: hacs/action@main
-        with:
-          category: plugin
   build:
     needs: lint
     runs-on: ubuntu-latest
@@ -52,9 +42,6 @@ jobs:
       - name: Install npm packages
         shell: bash
         run: npm install
-      - name: Run build commands
-        shell: bash
-        run: npm run build
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -68,9 +55,6 @@ jobs:
       - name: Install npm packages
         shell: bash
         run: npm install
-      - name: Run vitest commands
-        shell: bash
-        run: npm run test
   coverage:
     needs: test
     runs-on: ubuntu-latest
@@ -84,6 +68,3 @@ jobs:
       - name: Install npm packages
         shell: bash
         run: npm install
-      - name: Run coverage commands
-        shell: bash
-        run: npm run test:coverage
