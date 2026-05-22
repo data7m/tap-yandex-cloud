@@ -1,0 +1,26 @@
+# Setup stages
+stages:
+  - lint
+  - build
+
+# Run linters
+lint-commitlint:
+  stage: lint
+  tags:
+    - linux
+  script:
+    - npm install
+    - npx commitlint --last
+
+# Build artifacts
+build-application:
+  stage: build
+  tags:
+    - linux
+  script:
+    - git rev-parse HEAD > VERSION
+  artifacts:
+    name: artifacts
+    expire_in: 1 week
+    paths:
+      - VERSION
