@@ -24,7 +24,7 @@ classifiers = [
 ]
 license = "MIT"
 license-files = [ "LICENSE" ]
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "singer-sdk[faker]~=0.54.2",
     "typing-extensions>=4.5.0; python_version < '3.13'",
