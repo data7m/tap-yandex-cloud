@@ -2,15 +2,10 @@
 
 from __future__ import annotations
 
-import sys
-from typing import TYPE_CHECKING
+from collections.abc import Iterable
+from typing import TYPE_CHECKING, override
 
 from singer_sdk.streams import Stream
-
-if sys.version_info >= (3, 12):
-    from typing import override
-else:
-    from typing_extensions import override
 
 if TYPE_CHECKING:
     from collections.abc import Iterable

@@ -127,3 +127,9 @@ meltano run tap-yandex-cloud target-jsonl
 
 See the [dev guide](https://sdk.meltano.com/en/latest/dev_guide.html) for more instructions on how to use the SDK to
 develop your own taps and targets.
+
+
+## Appendix 1: Useful commands
+
+- fix errors by command: uvx ruff check tap_yandex_cloud tests --fix
+- format code by command: uvx ruff format tap_yandex_cloud tests

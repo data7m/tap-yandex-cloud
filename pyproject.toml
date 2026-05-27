@@ -96,6 +96,12 @@ required-version = ">=0.15"
 future-annotations = true
 ignore = [
     "COM812",  # missing-trailing-comma
+
+    # Temporary scaffold ignores. Remove after implementing real streams.
+    "ERA001",  # commented-out code
+    "FIX002",  # TODO comments
+    "TD002",   # missing TODO author
+    "TD003",   # missing TODO issue link
 ]
 select = ["ALL"]
 
