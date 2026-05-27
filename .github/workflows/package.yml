@@ -21,85 +21,65 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout sources
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-
       - name: Set up Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
-
       - name: Install npm dependencies
         run: npm ci
-
       - name: Run commitlint
         run: npx commitlint --last
-
       - name: Install uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
-
       - name: Run ruff check
         run: uvx ruff check tap_yandex_cloud tests
-
       - name: Run ruff format check
         run: uvx ruff format --check tap_yandex_cloud tests
-
       - name: Run GitHub Actions security analysis
         uses: zizmorcore/zizmor-action@f52a838cfabf134edcbaa7c8b3677dde20045018 # v0.2.0
         with:
           persona: pedantic
-
   build:
     name: Build
     runs-on: ubuntu-latest
     needs: [lint]
-
     steps:
       - name: Checkout sources
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           persist-credentials: false
-
       - name: Install uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
-
       - name: Compile Python sources
         run: uv run python -m compileall tap_yandex_cloud tests
-
       - name: Build wheel and sdist
         run: uv build
-
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
     needs: [build]
-
     steps:
       - name: Checkout sources
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-
       - name: Install uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
-
       - name: Run mypy
         run: uv run --group typing mypy tap_yandex_cloud tests
-
       - name: Run ty
         run: uv run --group typing ty check tap_yandex_cloud tests
-
   test:
     name: Test Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     needs: [build]
-
     strategy:
       fail-fast: false
       matrix:
@@ -107,17 +87,14 @@ jobs:
           - "3.12"
           - "3.13"
           - "3.14"
-
     steps:
       - name: Checkout sources
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-
       - name: Install uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           python-version: ${{ matrix.python-version }}
-
       - name: Run tox
         run: uvx --with tox-uv tox -e ${{ matrix.python-version }}
