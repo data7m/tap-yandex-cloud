@@ -6,7 +6,7 @@ requires = [
 build-backend = "hatchling.build"
 
 [project]
-name = "tap_yandex_cloud"
+name = "tap-yandex-cloud"
 dynamic = ["version"]
 description = "Singer tap for YandexCloud, built with the Meltano Singer SDK."
 readme = "README.md"
@@ -24,16 +24,17 @@ classifiers = [
 ]
 license = "MIT"
 license-files = [ "LICENSE" ]
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
-    "singer-sdk[faker]~=0.54.2",
+    "singer-sdk~=0.54.2",
     "typing-extensions>=4.5.0; python_version < '3.13'",
 ]
 
 [project.optional-dependencies]
-s3 = [
-    "s3fs>=2026.1.0",
-]
+# Optional dependensies for example s3:
+#s3 = [
+#    "s3fs>=2026.1.0",
+#]
 
 [project.scripts]
 # CLI declaration
