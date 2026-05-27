@@ -1,19 +1,12 @@
 """YandexCloud tap class."""
 
-from __future__ import annotations
-
-import sys
+from typing import override
 
 from singer_sdk import Tap
 from singer_sdk import typing as th  # JSON schema typing helpers
 
 # TODO: Import your custom stream types here:
 from tap_yandex_cloud import streams
-
-if sys.version_info >= (3, 12):
-    from typing import override
-else:
-    from typing_extensions import override
 
 
 class TapYandexCloud(Tap):
