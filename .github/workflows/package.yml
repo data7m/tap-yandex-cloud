@@ -42,7 +42,7 @@ jobs:
       - name: Run ruff format check
         run: uvx ruff format --check tap_yandex_cloud tests
       - name: Run GitHub Actions security analysis
-        uses: zizmorcore/zizmor-action@f52a838cfabf134edcbaa7c8b3677dde20045018 # v0.2.0
+        uses: zizmorcore/zizmor-action@b1d7e1fb5de872772f31590499237e7cce841e8e # v0.5.3
         with:
           persona: pedantic
   build:
