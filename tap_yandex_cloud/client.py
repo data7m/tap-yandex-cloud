@@ -39,3 +39,4 @@ class YandexCloudStream(Stream):
         #     yield record.to_dict()
         errmsg = "The method is not yet implemented (TODO)"
         raise NotImplementedError(errmsg)
+
