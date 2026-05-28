@@ -37,7 +37,7 @@ class TapYandexCloud(Tap):
             description=(
                 "Lower bound for usage data extraction. Used as the initial start date "
                 "before state exists."
-            )
+            ),
         ),
         th.Property(
             "end_date",
@@ -46,7 +46,7 @@ class TapYandexCloud(Tap):
             description=(
                 "Optional upper bound for usage data extraction. If omitted, the tap uses "
                 "yesterday in UTC."
-            )
+            ),
         ),
         th.Property(
             "lookback_days",
@@ -56,7 +56,7 @@ class TapYandexCloud(Tap):
             description=(
                 "Number of days to re-read before the last saved state date to handle late "
                 "billing adjustments."
-            )
+            ),
         ),
         th.Property(
             "aggregation_period",
@@ -82,8 +82,7 @@ class TapYandexCloud(Tap):
             A list of discovered streams.
         """
         return [
-            streams.GroupsStream(self),
-            streams.UsersStream(self),
+            streams.BillingAccountUsageDailyStream(self),
         ]
 
 

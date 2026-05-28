@@ -1,5 +1,11 @@
 # Contributing
 
+## Local checks
+
+- uvx ruff check tap_yandex_cloud tests
+- uvx ruff format tap_yandex_cloud tests
+- uv run pytest
+
 ## Useful commands
 
 - build package by command: uv build

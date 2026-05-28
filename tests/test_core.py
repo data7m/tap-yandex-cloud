@@ -8,9 +8,11 @@ from tap_yandex_cloud.tap import TapYandexCloud
 # }
 
 SAMPLE_CONFIG = {
-    "auth_token": "test-token",
-    "project_ids": ["test-project"],
-    "start_date": "2026-01-01T00:00:00Z",
+    "billing_account_id": "test-billing-account-id",
+    "iam_token": "test-iam-token",
+    "start_date": "2026-05-01T00:00:00Z",
+    "lookback_days": 7,
+    "aggregation_period": "DAY",
 }
 
 # Run standard built-in tap tests from the SDK:
@@ -29,11 +31,8 @@ def test_tap_can_be_created() -> None:
 
 
 def test_tap_discovers_streams() -> None:
-    """Verify that the scaffold streams are discoverable."""
+    """Verify that streams are discoverable."""
     tap = TapYandexCloud(config=SAMPLE_CONFIG)
     streams = tap.discover_streams()
 
-    assert len(streams) > 0
-
-
-# TODO: Create additional tests as appropriate for your tap.
+    assert streams
