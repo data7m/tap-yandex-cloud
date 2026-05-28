@@ -55,6 +55,8 @@ test = [
 typing = [
     "mypy>=1.19.1",
     "ty>=0.0.18",
+    "types-grpcio",
+    "types-protobuf",
 ]
 
 [tool.hatch.version]

@@ -1090,6 +1090,8 @@ test = [
 typing = [
     { name = "mypy" },
     { name = "ty" },
+    { name = "types-grpcio" },
+    { name = "types-protobuf" },
 ]
 
 [package.metadata]
@@ -1115,6 +1117,8 @@ test = [
 typing = [
     { name = "mypy", specifier = ">=1.19.1" },
     { name = "ty", specifier = ">=0.0.18" },
+    { name = "types-grpcio" },
+    { name = "types-protobuf" },
 ]
 
 [[package]]
@@ -1140,6 +1144,24 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/0e/4a/beefade12d109b4f7793d61b04b4478b1ad4d1465a719e7ff55b2d42461a/ty-0.0.38-py3-none-win32.whl", hash = "sha256:36fc5dd5dc09207ff3004b1560a79a3fb8d12456daeec914a7b802a918da654c", size = 10548583, upload-time = "2026-05-20T00:15:07.892Z" },
     { url = "https://files.pythonhosted.org/packages/15/64/941b205e2e46cc2297c245c64aa7691410b7454fa4d07a6cb3cf59487833/ty-0.0.38-py3-none-win_amd64.whl", hash = "sha256:eef0a8956ba14514076b1a963d13eb32986d9ebad7f0527b3cc01cb68bf35147", size = 11650542, upload-time = "2026-05-20T00:15:01.441Z" },
     { url = "https://files.pythonhosted.org/packages/59/02/c1c4f9ec4b94d95190636fa13f79c32f65165fbe3a0503882d4df164d2ac/ty-0.0.38-py3-none-win_arm64.whl", hash = "sha256:79abfc8658a026c30b1c955613437dab3ef4b12feca56a3e6df50903cc39e07f", size = 11010307, upload-time = "2026-05-20T00:15:04.567Z" },
+]
+
+[[package]]
+name = "types-grpcio"
+version = "1.0.0.20260518"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/4c/23/3082206fa4e3715cd7fb10194ffabb1ecb7edd325d020f05437ec9e0df31/types_grpcio-1.0.0.20260518.tar.gz", hash = "sha256:cd18473dd0819f0b193874e1035de4a6a58e8bacdb128139280a03f4f1a87d37", size = 14752, upload-time = "2026-05-18T06:01:50.626Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/be/77/07a2fbf4a2fe822e413feeac9057bc46bf13a5e225a82f5c7c90d58fae8a/types_grpcio-1.0.0.20260518-py3-none-any.whl", hash = "sha256:61c8d4ffcc0b99b1cec647808b6132805671daaa8ad2081673453874914a5347", size = 15309, upload-time = "2026-05-18T06:01:49.737Z" },
+]
+
+[[package]]
+name = "types-protobuf"
+version = "7.34.1.20260518"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/29/59/e2b13b499d15e6720150c4b1a8d91e31fcacf716b432397475b3151ff7e4/types_protobuf-7.34.1.20260518.tar.gz", hash = "sha256:28cfaded25889cb83ebfb63cfb0a43628f0b6f3785767bec17287dc6468795f2", size = 68936, upload-time = "2026-05-18T06:01:47.332Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2a/1f/ec5caf72c2e3b688ca3927e0979a04ddad19e1afc4bf1c199bd743e0f419/types_protobuf-7.34.1.20260518-py3-none-any.whl", hash = "sha256:a0a5337413347166439c0e07cbc26c6164d091401c6f01b1dfd8cdb966c4dd8f", size = 85992, upload-time = "2026-05-18T06:01:45.696Z" },
 ]
 
 [[package]]
