@@ -10,7 +10,10 @@ from typing import TYPE_CHECKING, cast, override
 import grpc
 from google.protobuf import timestamp_pb2
 from singer_sdk.streams import Stream
-from yandex.cloud.billing.usage_records.v1 import consumption_core_service_pb2
+from yandex.cloud.billing.usage_records.v1 import (
+    common_types_pb2,
+    consumption_core_service_pb2,
+)
 from yandex.cloud.billing.usage_records.v1.consumption_core_service_pb2_grpc import (
     ConsumptionCoreServiceStub,
 )
@@ -90,23 +93,25 @@ def string_decimal_to_float(value: object) -> float | None:
     return float(Decimal(raw_value))
 
 
-def aggregation_period_value(period_name: str) -> int:
+def aggregation_period_value(
+    period_name: str,
+) -> common_types_pb2.TimeGrouping.ValueType:
     """Return Yandex Billing aggregation period enum value."""
     normalized_period_name = period_name.upper()
-    aggregation_period_field = (
-        consumption_core_service_pb2.UsageReportRequest.DESCRIPTOR.fields_by_name[
-            "aggregation_period"
-        ]
-    )
-    enum_value = aggregation_period_field.enum_type.values_by_name.get(
-        normalized_period_name,
-    )
 
-    if enum_value is None:
+    aggregation_periods: dict[str, common_types_pb2.TimeGrouping.ValueType] = {
+        "DAY": common_types_pb2.TimeGrouping.DAY,
+        "WEEK": common_types_pb2.TimeGrouping.WEEK,
+        "MONTH": common_types_pb2.TimeGrouping.MONTH,
+        "QUARTER": common_types_pb2.TimeGrouping.QUARTER,
+        "YEAR": common_types_pb2.TimeGrouping.YEAR,
+    }
+
+    try:
+        return aggregation_periods[normalized_period_name]
+    except KeyError as error:
         msg = f"Unsupported aggregation_period: {period_name}"
-        raise ValueError(msg)
-
-    return enum_value.number
+        raise ValueError(msg) from error
 
 
 class YandexCloudBillingClient:
