@@ -34,20 +34,29 @@ class TapYandexCloud(Tap):
             th.DateTimeType(nullable=False),
             required=True,
             title="Start Date",
-            description="Lower bound for usage data extraction. Used as the initial start date before state exists.",
+            description=(
+                "Lower bound for usage data extraction. Used as the initial start date "
+                "before state exists."
+            )
         ),
         th.Property(
             "end_date",
             th.DateTimeType(nullable=True),
             title="End Date",
-            description="Optional upper bound for usage data extraction. If omitted, the tap uses yesterday in UTC.",
+            description=(
+                "Optional upper bound for usage data extraction. If omitted, the tap uses "
+                "yesterday in UTC."
+            )
         ),
         th.Property(
             "lookback_days",
             th.IntegerType(nullable=False),
             default=7,
             title="Lookback Days",
-            description="Number of days to re-read before the last saved state date to handle late billing adjustments.",
+            description=(
+                "Number of days to re-read before the last saved state date to handle late "
+                "billing adjustments."
+            )
         ),
         th.Property(
             "aggregation_period",
