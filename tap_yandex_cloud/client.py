@@ -76,6 +76,25 @@ def calculate_usage_date_range(
     return UsageDateRange(start_date=start_date, end_date=end_date)
 
 
+def currency_value_to_name(value: object) -> str | None:
+    """Convert Yandex currency enum value to name."""
+    if value is None:
+        return None
+
+    if not isinstance(value, int):
+        return str(value)
+
+    currency_values: dict[int, str] = {
+        common_types_pb2.CURRENCY_UNSPECIFIED: "CURRENCY_UNSPECIFIED",
+        common_types_pb2.RUB: "RUB",
+        common_types_pb2.USD: "USD",
+        common_types_pb2.KZT: "KZT",
+        common_types_pb2.EUR: "EUR",
+    }
+
+    return currency_values.get(value, str(value))
+
+
 def date_to_timestamp(value: date) -> timestamp_pb2.Timestamp:
     """Convert date to protobuf timestamp at UTC midnight."""
     timestamp = timestamp_pb2.Timestamp()
