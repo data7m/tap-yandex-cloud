@@ -2,11 +2,22 @@
 
 from __future__ import annotations
 
-from typing import ClassVar
+from datetime import UTC, datetime
+from typing import TYPE_CHECKING, ClassVar, override
 
 from singer_sdk import typing as th  # JSON Schema typing helpers
 
-from tap_yandex_cloud.client import YandexCloudStream
+from tap_yandex_cloud.client import (
+    YandexCloudBillingClient,
+    YandexCloudStream,
+    calculate_usage_date_range,
+    string_decimal_to_float,
+)
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from singer_sdk.helpers.types import Context
 
 
 class BillingAccountUsageDailyStream(YandexCloudStream):
@@ -56,3 +67,37 @@ class BillingAccountUsageDailyStream(YandexCloudStream):
             description="Record extraction timestamp in UTC.",
         ),
     ).to_dict()
+
+    @override
+    def get_records(self, context: Context | None) -> Iterable[dict]:
+        """Return daily billing account usage records."""
+        date_range = calculate_usage_date_range(
+            config=self.config,
+            state_date=self.get_starting_replication_key_value(context),
+        )
+
+        billing_client = YandexCloudBillingClient(
+            iam_token=self.config["iam_token"],
+            api_endpoint=self.config["api_endpoint"],
+        )
+
+        response = billing_client.get_billing_account_usage_report(
+            billing_account_id=self.config["billing_account_id"],
+            start_date=date_range.start_date,
+            end_date=date_range.end_date,
+            aggregation_period=self.config["aggregation_period"],
+        )
+
+        extracted_at = datetime.now(UTC).isoformat()
+
+        for entity in response.entities_data:
+            for item in entity.periodic:
+                yield {
+                    "billing_account_id": self.config["billing_account_id"],
+                    "usage_date": item.timestamp.ToDatetime().date().isoformat(),
+                    "aggregation_period": self.config["aggregation_period"],
+                    "currency": response.currency,
+                    "cost": string_decimal_to_float(item.cost),
+                    "expense": string_decimal_to_float(item.expense),
+                    "extracted_at": extracted_at,
+                }

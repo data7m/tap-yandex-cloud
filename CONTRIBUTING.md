@@ -5,6 +5,8 @@
 - uvx ruff check tap_yandex_cloud tests
 - uvx ruff format tap_yandex_cloud tests
 - uv run pytest
+- uv run --group typing mypy tap_yandex_cloud tests
+- uv run --group typing ty check tap_yandex_cloud tests
 
 ## Useful commands
 

@@ -5,12 +5,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta
 from decimal import Decimal
-from typing import TYPE_CHECKING, override
+from typing import TYPE_CHECKING, cast, override
 
 import grpc
 from google.protobuf import timestamp_pb2
 from singer_sdk.streams import Stream
-from yandex.cloud.billing.usage_records.v1 import consumption_core_pb2
+from yandex.cloud.billing.usage_records.v1 import consumption_core_service_pb2
 from yandex.cloud.billing.usage_records.v1.consumption_core_service_pb2_grpc import (
     ConsumptionCoreServiceStub,
 )
@@ -19,6 +19,9 @@ if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping
 
     from singer_sdk.helpers.types import Context
+
+ConfigDate = str | date | datetime
+ConfigInt = int | str
 
 
 @dataclass(frozen=True)
@@ -53,13 +56,17 @@ def calculate_usage_date_range(
     today: date | None = None,
 ) -> UsageDateRange:
     """Calculate effective usage date range using config, state, and lookback."""
-    start_date = parse_config_date(config["start_date"])
+    start_date = parse_config_date(cast("ConfigDate", config["start_date"]))
 
     end_date_value = config.get("end_date")
-    end_date = parse_config_date(end_date_value) if end_date_value else yesterday_utc(today)
+    end_date = (
+        parse_config_date(cast("ConfigDate", end_date_value))
+        if end_date_value
+        else yesterday_utc(today)
+    )
 
     if state_date:
-        lookback_days = int(config.get("lookback_days", 7))
+        lookback_days = int(cast("ConfigInt", config.get("lookback_days", 7)))
         state_start_date = parse_config_date(state_date) - timedelta(days=lookback_days)
         start_date = max(start_date, state_start_date)
 
@@ -86,12 +93,20 @@ def string_decimal_to_float(value: object) -> float | None:
 def aggregation_period_value(period_name: str) -> int:
     """Return Yandex Billing aggregation period enum value."""
     normalized_period_name = period_name.upper()
+    aggregation_period_field = (
+        consumption_core_service_pb2.UsageReportRequest.DESCRIPTOR.fields_by_name[
+            "aggregation_period"
+        ]
+    )
+    enum_value = aggregation_period_field.enum_type.values_by_name.get(
+        normalized_period_name,
+    )
 
-    try:
-        return getattr(consumption_core_pb2, normalized_period_name)
-    except AttributeError as error:
+    if enum_value is None:
         msg = f"Unsupported aggregation_period: {period_name}"
-        raise ValueError(msg) from error
+        raise ValueError(msg)
+
+    return enum_value.number
 
 
 class YandexCloudBillingClient:
@@ -117,9 +132,9 @@ class YandexCloudBillingClient:
         start_date: date,
         end_date: date,
         aggregation_period: str,
-    ) -> object:
+    ) -> consumption_core_service_pb2.BillingAccountUsageReportResponse:
         """Fetch billing account usage report from Yandex Cloud."""
-        request = consumption_core_pb2.UsageReportRequest(
+        request = consumption_core_service_pb2.UsageReportRequest(
             billing_account_id=billing_account_id,
             start_date=date_to_timestamp(start_date),
             end_date=date_to_timestamp(end_date),
