@@ -80,7 +80,7 @@ jobs:
       - name: Run ty
         run: uv run --group typing ty check tap_yandex_cloud tests
   test:
-    name: Test Python ${{ matrix.python-version }}
+    name: Test
     runs-on: ubuntu-latest
     needs: [build]
     strategy:
