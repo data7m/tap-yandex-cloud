@@ -5,7 +5,6 @@ from typing import override
 from singer_sdk import Tap
 from singer_sdk import typing as th  # JSON schema typing helpers
 
-# TODO: Import your custom stream types here:
 from tap_yandex_cloud import streams
 
 
@@ -14,34 +13,64 @@ class TapYandexCloud(Tap):
 
     name = "tap_yandex_cloud"
 
-    # TODO: Update this section with the actual config values you expect:
     config_jsonschema = th.PropertiesList(
         th.Property(
-            "auth_token",
+            "billing_account_id",
+            th.StringType(nullable=False),
+            required=True,
+            title="Billing Account ID",
+            description="Yandex Cloud billing account ID to fetch usage and cost data for.",
+        ),
+        th.Property(
+            "iam_token",
             th.StringType(nullable=False),
             required=True,
             secret=True,  # Flag config as protected.
-            title="Auth Token",
-            description="The token to authenticate against YandexCloud",
-        ),
-        th.Property(
-            "project_ids",
-            th.ArrayType(th.StringType(nullable=False), nullable=False),
-            required=True,
-            title="Project IDs",
-            description="Project IDs to replicate",
+            title="IAM Token",
+            description="Yandex Cloud IAM token used to authenticate Billing Usage API requests.",
         ),
         th.Property(
             "start_date",
-            th.DateTimeType(nullable=True),
-            description="The earliest record date to sync",
+            th.DateTimeType(nullable=False),
+            required=True,
+            title="Start Date",
+            description=(
+                "Lower bound for usage data extraction. Used as the initial start date "
+                "before state exists."
+            ),
         ),
         th.Property(
-            "api_url",
+            "end_date",
+            th.DateTimeType(nullable=True),
+            title="End Date",
+            description=(
+                "Optional upper bound for usage data extraction. If omitted, the tap uses "
+                "yesterday in UTC."
+            ),
+        ),
+        th.Property(
+            "lookback_days",
+            th.IntegerType(nullable=False),
+            default=7,
+            title="Lookback Days",
+            description=(
+                "Number of days to re-read before the last saved state date to handle late "
+                "billing adjustments."
+            ),
+        ),
+        th.Property(
+            "aggregation_period",
             th.StringType(nullable=False),
-            title="API URL",
-            default="https://api.mysample.com",
-            description="The url for the API service",
+            default="DAY",
+            title="Aggregation Period",
+            description="Yandex Billing aggregation period. For the first version, use DAY.",
+        ),
+        th.Property(
+            "api_endpoint",
+            th.StringType(nullable=False),
+            default="billing.api.cloud.yandex.net:443",
+            title="API Endpoint",
+            description="Yandex Cloud Billing Usage gRPC API endpoint.",
         ),
     ).to_dict()
 
@@ -53,8 +82,7 @@ class TapYandexCloud(Tap):
             A list of discovered streams.
         """
         return [
-            streams.GroupsStream(self),
-            streams.UsersStream(self),
+            streams.BillingAccountUsageDailyStream(self),
         ]
 
 
