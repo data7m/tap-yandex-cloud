@@ -2,58 +2,57 @@
 
 from __future__ import annotations
 
+from typing import ClassVar
+
 from singer_sdk import typing as th  # JSON Schema typing helpers
 
 from tap_yandex_cloud.client import YandexCloudStream
 
-# TODO: - Override `UsersStream` and `GroupsStream` with your own stream definition.
-#       - Copy-paste as many times as needed to create multiple stream types.
 
+class BillingAccountUsageDailyStream(YandexCloudStream):
+    """Daily billing account usage stream."""
 
-class UsersStream(YandexCloudStream):
-    """Define custom stream."""
+    name = "billing_account_usage_daily"
+    primary_keys: ClassVar[list[str]] = ["billing_account_id", "usage_date"]
+    replication_key = "usage_date"
+    is_sorted = True
 
-    name = "users"
-    primary_keys = ("id",)
-    replication_key = None
-    # Optionally, you may also use `schema_filepath` in place of `schema`:
-    # schema_filepath = SCHEMAS_DIR / "users.json"
     schema = th.PropertiesList(
-        th.Property("name", th.StringType),
         th.Property(
-            "id",
+            "billing_account_id",
             th.StringType,
-            description="The user's system ID",
+            required=True,
+            description="Yandex Cloud billing account ID.",
         ),
         th.Property(
-            "age",
-            th.IntegerType,
-            description="The user's age in years",
+            "usage_date",
+            th.DateType,
+            required=True,
+            description="Usage date in UTC.",
         ),
         th.Property(
-            "email",
+            "aggregation_period",
             th.StringType,
-            description="The user's email address",
+            description="Aggregation period used by Yandex Billing API.",
         ),
-        th.Property("street", th.StringType),
-        th.Property("city", th.StringType),
         th.Property(
-            "state",
+            "currency",
             th.StringType,
-            description="State name in ISO 3166-2 format",
+            description="Billing account currency.",
         ),
-        th.Property("zip", th.StringType),
-    ).to_dict()
-
-
-class GroupsStream(YandexCloudStream):
-    """Define custom stream."""
-
-    name = "groups"
-    primary_keys = ("id",)
-    replication_key = "modified"
-    schema = th.PropertiesList(
-        th.Property("name", th.StringType),
-        th.Property("id", th.StringType),
-        th.Property("modified", th.DateTimeType),
+        th.Property(
+            "cost",
+            th.NumberType,
+            description="Raw usage cost before credits and discounts.",
+        ),
+        th.Property(
+            "expense",
+            th.NumberType,
+            description="Final billable amount after credits and discounts.",
+        ),
+        th.Property(
+            "extracted_at",
+            th.DateTimeType,
+            description="Record extraction timestamp in UTC.",
+        ),
     ).to_dict()

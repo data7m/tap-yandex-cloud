@@ -31,8 +31,9 @@ def test_tap_can_be_created() -> None:
 
 
 def test_tap_discovers_streams() -> None:
-    """Verify that streams are discoverable."""
+    """Verify that billing usage stream is discoverable."""
     tap = TapYandexCloud(config=SAMPLE_CONFIG)
-    streams = tap.discover_streams()
+    discovered_streams = tap.discover_streams()
 
-    assert streams
+    assert len(discovered_streams) == 1
+    assert discovered_streams[0].name == "billing_account_usage_daily"
