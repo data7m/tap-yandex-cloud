@@ -11,6 +11,7 @@ from tap_yandex_cloud.client import (
     YandexCloudBillingClient,
     YandexCloudStream,
     calculate_usage_date_range,
+    currency_value_to_name,
     string_decimal_to_float,
 )
 
@@ -96,7 +97,7 @@ class BillingAccountUsageDailyStream(YandexCloudStream):
                     "billing_account_id": self.config["billing_account_id"],
                     "usage_date": item.timestamp.ToDatetime().date().isoformat(),
                     "aggregation_period": self.config["aggregation_period"],
-                    "currency": response.currency,
+                    "currency": currency_value_to_name(response.currency),
                     "cost": string_decimal_to_float(item.cost),
                     "expense": string_decimal_to_float(item.expense),
                     "extracted_at": extracted_at,
