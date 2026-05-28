@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta
 from decimal import Decimal
@@ -17,6 +16,8 @@ from yandex.cloud.billing.usage_records.v1.consumption_core_service_pb2_grpc imp
 )
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable, Mapping
+
     from singer_sdk.helpers.types import Context
 
 
@@ -65,9 +66,9 @@ def calculate_usage_date_range(
     return UsageDateRange(start_date=start_date, end_date=end_date)
 
 
-def date_to_timestamp(value: date) -> Timestamp:
+def date_to_timestamp(value: date) -> timestamp_pb2.Timestamp:
     """Convert date to protobuf timestamp at UTC midnight."""
-    timestamp = Timestamp()
+    timestamp = timestamp_pb2.Timestamp()
     timestamp.FromDatetime(datetime.combine(value, time.min, UTC))
     return timestamp
 
