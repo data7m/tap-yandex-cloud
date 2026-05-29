@@ -189,6 +189,7 @@ class YandexCloudBillingClient:
             metadata=self._metadata,
         )
 
+
 class YandexCloudStream(Stream):
     """Base stream class for Yandex Cloud streams."""
 
