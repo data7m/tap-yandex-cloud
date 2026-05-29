@@ -182,19 +182,12 @@ class YandexCloudBillingClient:
         )
 
         if self._metadata is None:
-            return cast(
-                "consumption_core_service_pb2.BillingAccountUsageReportResponse",
-                self._stub.GetBillingAccountUsageReport(request),
-            )
+            return self._stub.GetBillingAccountUsageReport(request)
 
-        return cast(
-            "consumption_core_service_pb2.BillingAccountUsageReportResponse",
-            self._stub.GetBillingAccountUsageReport(
-                request,
-                metadata=self._metadata,
-            ),
+        return self._stub.GetBillingAccountUsageReport(
+            request,
+            metadata=self._metadata,
         )
-
 
 class YandexCloudStream(Stream):
     """Base stream class for Yandex Cloud streams."""
