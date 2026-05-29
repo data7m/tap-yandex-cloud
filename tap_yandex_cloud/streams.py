@@ -27,7 +27,7 @@ class BillingAccountUsageDailyStream(YandexCloudStream):
     name = "billing_account_usage_daily"
     primary_keys: ClassVar[list[str]] = ["billing_account_id", "usage_date"]
     replication_key = "usage_date"
-    is_sorted = True
+    is_sorted = False
 
     schema = th.PropertiesList(
         th.Property(
