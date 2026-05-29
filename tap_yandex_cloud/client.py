@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta
 from decimal import Decimal
@@ -17,6 +18,7 @@ from yandex.cloud.billing.usage_records.v1 import (
 from yandex.cloud.billing.usage_records.v1.consumption_core_service_pb2_grpc import (
     ConsumptionCoreServiceStub,
 )
+from yandexcloud import SDK
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping
@@ -139,15 +141,29 @@ class YandexCloudBillingClient:
     def __init__(
         self,
         *,
-        iam_token: str,
+        iam_token: str | None,
+        service_account_key_json: str | None,
         api_endpoint: str,
     ) -> None:
         """Initialize the Billing Usage API client."""
-        credentials = grpc.ssl_channel_credentials()
-        channel = grpc.secure_channel(api_endpoint, credentials)
+        if service_account_key_json:
+            service_account_key = json.loads(service_account_key_json)
+            sdk = SDK(service_account_key=service_account_key)
 
-        self._stub = ConsumptionCoreServiceStub(channel)
-        self._metadata = (("authorization", f"Bearer {iam_token}"),)
+            self._stub = sdk.client(ConsumptionCoreServiceStub)
+            self._metadata = None
+            return
+
+        if iam_token:
+            credentials = grpc.ssl_channel_credentials()
+            channel = grpc.secure_channel(api_endpoint, credentials)
+
+            self._stub = ConsumptionCoreServiceStub(channel)
+            self._metadata = (("authorization", f"Bearer {iam_token}"),)
+            return
+
+        msg = "Either service_account_key_json or iam_token must be provided."
+        raise ValueError(msg)
 
     def get_billing_account_usage_report(
         self,
@@ -164,6 +180,9 @@ class YandexCloudBillingClient:
             end_date=date_to_timestamp(end_date),
             aggregation_period=aggregation_period_value(aggregation_period),
         )
+
+        if self._metadata is None:
+            return self._stub.GetBillingAccountUsageReport(request)
 
         return self._stub.GetBillingAccountUsageReport(
             request,

@@ -23,11 +23,23 @@ class TapYandexCloud(Tap):
         ),
         th.Property(
             "iam_token",
-            th.StringType(nullable=False),
-            required=True,
-            secret=True,  # Flag config as protected.
+            th.StringType(nullable=True),
+            secret=True,
             title="IAM Token",
-            description="Yandex Cloud IAM token used to authenticate Billing Usage API requests.",
+            description=(
+                "Short-lived Yandex Cloud IAM token. Useful for local testing. "
+                "For production, prefer service_account_key_json."
+            ),
+        ),
+        th.Property(
+            "service_account_key_json",
+            th.StringType(nullable=True),
+            secret=True,
+            title="Service Account Key JSON",
+            description=(
+                "Yandex Cloud service account authorized key JSON. "
+                "Used to authenticate automatically without manually rotating IAM tokens."
+            ),
         ),
         th.Property(
             "start_date",
