@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from typing import TYPE_CHECKING, ClassVar, override
+from typing import TYPE_CHECKING, ClassVar, cast, override
 
 from singer_sdk import typing as th  # JSON Schema typing helpers
 
@@ -78,8 +78,12 @@ class BillingAccountUsageDailyStream(YandexCloudStream):
         )
 
         billing_client = YandexCloudBillingClient(
-            iam_token=self.config["iam_token"],
-            api_endpoint=self.config["api_endpoint"],
+            iam_token=cast("str | None", self.config.get("iam_token")),
+            service_account_key_json=cast(
+                "str | None",
+                self.config.get("service_account_key_json"),
+            ),
+            api_endpoint=cast("str", self.config["api_endpoint"]),
         )
 
         response = billing_client.get_billing_account_usage_report(
