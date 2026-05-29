@@ -74,7 +74,7 @@ Example:
 export TAP_YANDEX_CLOUD_SERVICE_ACCOUNT_KEY_JSON='{"id":"...","service_account_id":"...","created_at":"...","key_algorithm":"RSA_2048","public_key":"...","private_key":"..."}'
 ```
 
-The service account must have enough permissions to read billing usage data for the configured billing account.
+The service account must have enough permissions to read billing usage data for the configured billing account. In Yandex Cloud, IAM permissions on the service account itself are not enough. You also need to grant the service account access to the billing account in the Yandex Cloud Billing section.
 
 Minimal required tap settings:
 
@@ -96,7 +96,6 @@ or:
 ```bash
 export TAP_YANDEX_CLOUD_SERVICE_ACCOUNT_KEY_JSON='...'
 ```
-
 
 ## Usage
 
