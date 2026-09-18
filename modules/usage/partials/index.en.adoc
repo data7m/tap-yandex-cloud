@@ -1,0 +1,63 @@
+= Usage
+:description: Using Septic Card in Home Assistant — adding custom cards to dashboards via the visual editor or YAML configuration.
+:keywords: Septic, Home Assistant, usage, dashboard, Lovelace, custom card, YAML, visual editor
+:navtitle: Usage
+
+*Septic Card* is used to display septic tank monitoring data in the *Home Assistant* interface.
+
+The cards can be added to Home Assistant dashboards using standard methods: through the visual editor (UI) or directly via Lovelace YAML configuration.
+
+The following interface elements are available as part of the project:
+
+- *Septic Tank Card* (`custom:septic-tank-card`)
+- *Septic Tile Card* (`custom:septic-tile-card`)
+- *Septic Badge* (`custom:septic-badge`)
+
+== Using the UI (Visual editor)
+
+Adding a card via the visual editor is suitable for most users and does not require manual editing of YAML files.
+
+1. Open any dashboard in Home Assistant.
+2. Click *Edit dashboard*.
+3. Select *Add card*.
+4. Choose *Manual card*.
+5. Paste the card configuration and save the changes.
+
+Example configuration:
+
+[source,yaml]
+----
+type: custom:septic-tank-card
+entities:
+  level: sensor.septic_tank_liquid_level
+  temp: sensor.septic_tank_temperature
+  pressure: sensor.septic_tank_pressure
+  x_level: sensor.septic_tank_critical_level
+  exceeds_x_level: binary_sensor.septic_tank_exceeds_critical_level
+  sdt: sensor.septic_tank_sdt
+  error_name: sensor.septic_tank_error
+----
+
+== Using YAML (Raw configuration)
+
+If Home Assistant dashboards are configured in YAML mode, the card configuration must be added directly to the view definition.
+
+Example dashboard configuration:
+
+[source,yaml]
+----
+views:
+  - title: Home
+    cards:
+      - type: custom:septic-tank-card
+        entities:
+          level: sensor.septic_tank_liquid_level
+          temp: sensor.septic_tank_temperature
+          pressure: sensor.septic_tank_pressure
+          x_level: sensor.septic_tank_critical_level
+          exceeds_x_level: binary_sensor.septic_tank_exceeds_critical_level
+          sdt: sensor.septic_tank_sdt
+          error_name: sensor.septic_tank_error
+----
+
+After saving the configuration, the card appears on the dashboard automatically.

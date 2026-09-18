@@ -1,0 +1,9 @@
+name: tap-yandex-cloud
+title: Tap Yandex Cloud
+version: latest
+prerelease:
+nav:
+  - modules/installation/nav.adoc
+  - modules/usage/nav.adoc
+  - modules/configuration/nav.adoc
+  - modules/changelogs/nav.adoc
