@@ -1,0 +1,13 @@
+= Changelogs
+:description: Change history of Septic Card — new features, improvements, and fixes for Home Assistant.
+:keywords: Septic, Home Assistant, changelog, change history, versions, releases, custom card
+:navtitle: Changelogs
+
+This section contains the change history of *Septic Card*. Here you can find information about new features, behavior changes, user interface improvements, and bug fixes. Each version is documented on a separate page and corresponds to a published project release.
+
+Versions:
+
+- xref:v0.9.0/index.adoc[v0.9.0]
+- xref:v0.0.4/index.adoc[v0.0.4]
+- xref:v0.0.3/index.adoc[v0.0.3]
+- xref:v0.0.2/index.adoc[v0.0.2]

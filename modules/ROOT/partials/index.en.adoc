@@ -1,0 +1,26 @@
+= Septic Card
+:description: Septic Card for Home Assistant — a custom card for monitoring septic tank fill level.
+:keywords: Home Assistant, Septic, septic tank, liquid level, sensors, monitoring, dashboard, custom card
+:navtitle: Overview
+
+image:septic-en.png[Septic Card]
+
+*Septic Card* is a custom card for *Home Assistant* designed to visualize and monitor the fill level of a septic tank.
+
+The card is intended for clear and compact presentation of sensor data used in a septic tank monitoring system.
+
+The card works with an aggregated sensor entity and displays:
+
+- current liquid level
+- configured warning and critical thresholds
+- additional parameters such as temperature and pressure (if available)
+- alarm states and errors
+
+This documentation describes installation, entity configuration, and usage recommendations within the Home Assistant interface.
+
+== Supported hardware
+
+Septic Card is used with real-world hardware for monitoring septic systems.
+Below is a list of manufacturers and solutions with which the card has been tested.
+
+* https://gseptik.ru/[G-Septik] — septic system monitoring solution with a cloud API and Home Assistant support
